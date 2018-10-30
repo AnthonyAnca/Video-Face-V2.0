@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">VideoFace</string>
+    <string name="not_log_in">No se puede iniciar sesión</string>
+    <string name="log_out">log Out</string>
+    <string name="revoke">Revoke</string>
+    <string name="not_close_session">No se pudo cerrar sesión</string>
+    <string name="not_revoke">No se pudo revocar el acceso</string>
+    <string name="capture_video">Capturar video</string>
+    <string name="grabar_video">Grabar Video</string>
+    <string name="ok">ok</string>
+</resources>

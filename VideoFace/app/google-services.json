@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "383694281140",
+    "firebase_url": "https://videoface-8f1a4.firebaseio.com",
+    "project_id": "videoface-8f1a4",
+    "storage_bucket": "videoface-8f1a4.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:383694281140:android:c31b7af61a318838",
+        "android_client_info": {
+          "package_name": "com.example.anthonyanca.videoface"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "383694281140-2s1i3uplojfpf1s3dnbeg2gomiculf7d.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.anthonyanca.videoface",
+            "certificate_hash": "c0f6ed734dbe4d121f4d2047a12b34284053bf3e"
+          }
+        },
+        {
+          "client_id": "383694281140-6rshld75khlnfnau6bpehi3k30imgf6n.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCwO5CjYV5S30dRj9OppU4ZBcHjsf-yK5Y"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "383694281140-6rshld75khlnfnau6bpehi3k30imgf6n.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
