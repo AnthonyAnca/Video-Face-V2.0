@@ -50,7 +50,7 @@ public class EventoActivity extends AppCompatActivity {
         btnInscribir.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Firebase invitado = RootRef.child("Invitados" + userId);
+                Firebase invitado = RootRef.child("Invitados/" + userId);
 
 
                 invitado.child("correo").setValue(userEmail);

@@ -81,8 +81,8 @@ public class LogInActivity extends AppCompatActivity implements GoogleApiClient.
     private void handleSignInResult(final GoogleSignInResult result) {
         if (result.isSuccess()){
             final GoogleSignInAccount account = result.getSignInAccount();
-            String email = account.getEmail().toString();
-            String password = account.getId().toString();
+            final String email = account.getEmail().toString();
+            final String password = account.getId().toString();
 
 
                 firebaseAuth.signInWithEmailAndPassword(email,password)
@@ -96,8 +96,8 @@ public class LogInActivity extends AppCompatActivity implements GoogleApiClient.
                                 }
                                 else {
                                         Intent intent = new Intent(getApplication(), RegisterActivity.class);
-                                        intent.putExtra(RegisterActivity.UserName, account.getEmail());
-                                        intent.putExtra(RegisterActivity.UserPassword, account.getId());
+                                        intent.putExtra(RegisterActivity.UserName, email);
+                                        intent.putExtra(RegisterActivity.UserPassword, password);
                                         startActivity(intent);
                                     }
                             }

@@ -46,6 +46,7 @@ import com.google.android.gms.vision.face.Face;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
@@ -74,11 +75,12 @@ public class RegisterActivity extends AppCompatActivity implements GoogleApiClie
 
     String acountName;
     String acountEmail;
+    String acountId;
 
     private  final int VIDEO_REQUEST_CODE = 100;
     static final int REQUEST_VIDEO_CAPTURE = 1;
 
-    public static final String UserName = "email";
+    public static final String UserName = "email@gmail.com";
     public static final String UserPassword = "password";
 
     VideoView ressultVideo;
@@ -126,6 +128,8 @@ public class RegisterActivity extends AppCompatActivity implements GoogleApiClie
 
         mediaMetadataRetriever = new MediaMetadataRetriever();
 
+        firebaseAuth = FirebaseAuth.getInstance();
+
         images = new Image[10];
 
         imgUri = new Uri[10];
@@ -144,11 +148,13 @@ public class RegisterActivity extends AppCompatActivity implements GoogleApiClie
         new RetrieveByteArray().execute("https://thumbs.gfycat.com/VapidDefenselessCero-size_restricted.gif");
         gifImageView.startAnimation();
 
+
     }
 
     @Override
     protected void onStart() {
         super.onStart();
+
 
         OptionalPendingResult<GoogleSignInResult> opr = Auth.GoogleSignInApi.silentSignIn(googleApiClient);
         if (opr.isDone()){
@@ -207,6 +213,7 @@ public class RegisterActivity extends AppCompatActivity implements GoogleApiClie
 
             acountName = account.getDisplayName();
             acountEmail = account.getEmail();
+            acountId = account.getId();
 
         } else {
             goLogInScreen();
@@ -219,7 +226,7 @@ public class RegisterActivity extends AppCompatActivity implements GoogleApiClie
     }
 
 
-    public void captureVideo(View view) {
+    /*public void captureVideo(View view) {
         Intent camera_intent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
 
         File videoface = getFilepath();
@@ -230,9 +237,9 @@ public class RegisterActivity extends AppCompatActivity implements GoogleApiClie
         camera_intent.putExtra(MediaStore.EXTRA_OUTPUT, videoUri);
         camera_intent.putExtra(MediaStore.EXTRA_VIDEO_QUALITY,1);
         startActivityForResult(camera_intent,VIDEO_REQUEST_CODE);
-    }
+    }*/
 
-    public File getFilepath()
+    /*public File getFilepath()
     {
         File folder = new File("sdcard/videoFace_app");
         if(!folder.exists())
@@ -243,7 +250,7 @@ public class RegisterActivity extends AppCompatActivity implements GoogleApiClie
         File video_file = new File(folder,"rostro.mp4");
 
         return video_file;
-    }
+    }*/
 
     private void uploadFile(){
 
@@ -254,7 +261,7 @@ public class RegisterActivity extends AppCompatActivity implements GoogleApiClie
         if(videoUri !=null) {
 
 
-                StorageReference riversRef = storageReference.child(acountEmail+"/"+"rotro.mp4");
+                StorageReference riversRef = storageReference.child(acountEmail+"/"+"rostro.mp4");
 
             riversRef.putFile(videoUri)
                         .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
@@ -289,27 +296,24 @@ public class RegisterActivity extends AppCompatActivity implements GoogleApiClie
 
         }
 
-        Toast.makeText(getApplicationContext(), "Registro completado", Toast.LENGTH_SHORT).show();
-        goMainScreen();
-    }
-    private void crearUser(){
-
-            firebaseAuth.createUserWithEmailAndPassword(UserName, UserPassword)
-                    .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
-                            if (task.isSuccessful()) {
-                                Toast.makeText(RegisterActivity.this, "Bienvenido " + UserName, Toast.LENGTH_LONG).show();
-                                Intent intent = new Intent(getApplication(),MainActivity.class);
-                                startActivity(intent);
-                            } else {
-                                //if (task.getException() instanceof FirebaseAuthUserCollisionException) {
-                                //} else {
-                                    Toast.makeText(RegisterActivity.this, "No se pudo registar el usuario", Toast.LENGTH_LONG).show();
-                                //}
-                            }
+        //Toast.makeText(getApplicationContext(), "Registro completado", Toast.LENGTH_SHORT).show();
+        firebaseAuth.createUserWithEmailAndPassword(acountEmail, acountId)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            Toast.makeText(RegisterActivity.this, "Bienvenido " + acountEmail, Toast.LENGTH_LONG).show();
+                            Intent intent = new Intent(getApplication(),MainActivity.class);
+                            startActivity(intent);
+                        } else {
+                            //if (task.getException() instanceof FirebaseAuthUserCollisionException) {
+                            //} else {
+                            Toast.makeText(RegisterActivity.this, "No se pudo registar el usuario", Toast.LENGTH_LONG).show();
+                            //}
                         }
-                    });
+                        progressDialog.dismiss();
+                    }
+                });
     }
 
     public void Grabar(View view) {
@@ -320,8 +324,8 @@ public class RegisterActivity extends AppCompatActivity implements GoogleApiClie
             //file_video = new File(sdcard,"video.mp4");
             //takeVideoIntent.putExtra(MediaStore.EXTRA_OUTPUT,file_video);
             //takeVideoIntent.setType("video/mp4");
-            //startActivityForResult(takeVideoIntent, REQUEST_VIDEO_CAPTURE);
-            captureVideo(view);
+            startActivityForResult(takeVideoIntent, REQUEST_VIDEO_CAPTURE);
+            //captureVideo(view);
             //initFrame();
             //startActivityForResult(takeVideoIntent,0);
 
@@ -329,15 +333,15 @@ public class RegisterActivity extends AppCompatActivity implements GoogleApiClie
 
     }
 
-    private void takeFrame() {
+    //private void takeFrame() {
 
-        String duration = mediaMetadataRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION);
+        //String duration = mediaMetadataRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION);
         //long frametime = 200000;
 
-        int countFace =0;
+        //int countFace =0;
 
-        for (int i =0; i<10 ; i++)
-        {
+        //for (int i =0; i<10 ; i++)
+        //{
             //Bitmap bmFrame = mediaMetadataRetriever.getFrameAtTime(frametime, MediaMetadataRetriever.OPTION_CLOSEST);
 
             //img1.setImageBitmap(bmFrame);
@@ -397,7 +401,7 @@ public class RegisterActivity extends AppCompatActivity implements GoogleApiClie
 
             //Toast.makeText(getApplicationContext(),imgUri[i].toString()+ "///" + frametime,Toast.LENGTH_LONG).show();
 
-        }
+        //}
         /*if(countFace>=2)
         {
             rostro = true;
@@ -406,21 +410,21 @@ public class RegisterActivity extends AppCompatActivity implements GoogleApiClie
             Toast.makeText(RegisterActivity.this, "No se detectó rostro en el video, por favor intente grabando el video otra vez",Toast.LENGTH_LONG).show();
         }*/
 
-    }
+    //}
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode,  Intent data) {
 
         super.onActivityResult(requestCode, resultCode, data);
 
-        /*if(requestCode==VIDEO_REQUEST_CODE){
-            if (resultCode==RESULT_OK){
-                Toast.makeText(getApplicationContext(),"Video subido con éxito",Toast.LENGTH_LONG).show();
+       /* if(requestCode==VIDEO_REQUEST_CODE) {
+            if (resultCode == RESULT_OK) {
+                Toast.makeText(getApplicationContext(), "Video subido con éxito", Toast.LENGTH_LONG).show();
+            } else {
+                Toast.makeText(getApplicationContext(), "Fallo al subir el video", Toast.LENGTH_LONG).show();
             }
-            else {
-                Toast.makeText(getApplicationContext(),"Fallo al subir el video",Toast.LENGTH_LONG).show();
-            }
-        */
+        }*/
+
         if (requestCode == REQUEST_VIDEO_CAPTURE && resultCode == RESULT_OK) {
             videoUri = data.getData();
 
@@ -463,8 +467,7 @@ public class RegisterActivity extends AppCompatActivity implements GoogleApiClie
         {
             //takeFrame();
             //if (rostro){
-                crearUser();
-                uploadFile();
+            uploadFile();
             //}
         }
         else{
